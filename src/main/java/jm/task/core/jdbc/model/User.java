@@ -6,7 +6,7 @@ import jm.task.core.jdbc.service.UserService;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table
 public class User {
     @Id
     @GeneratedValue
@@ -21,7 +21,7 @@ public class User {
     @Column(name = "age")
     private Byte age;
 
-    public User(String name) {
+    public User() {
 
     }
 

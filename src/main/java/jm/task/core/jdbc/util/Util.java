@@ -15,12 +15,11 @@ import java.sql.*;
 
 public class Util {
     // Для Hibernet
-    private static SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory = null;
 
     static {
         try {
             Configuration configuration = getConfig();
-            configuration.configure();
             sessionFactory = configuration.buildSessionFactory();
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -28,15 +27,20 @@ public class Util {
     }
 
     public static Configuration getConfig() {
-        Configuration configuration = new Configuration();
-        configuration.addAnnotatedClass(User.class);
-        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
-        configuration.setProperty("connection.driver_class", "com.mysql.jdbc.Driver");
-        configuration.setProperty("connection.url", "jdbc:mysql://localhost:3306/testDB?useSSL=false");
-        configuration.setProperty("connection.username", "testUser");
-        configuration.setProperty("connection.password", "testUser");
-        configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "update");
+        Configuration configuration = new Configuration()
+                .setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver")
+                .setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/testDB?useSSL=false")
+                .setProperty("hibernate.connection.username", "testUser")
+                .setProperty("hibernate.connection.password", "testUser")
+                .setProperty("hibernate.connection.autocommit", "false")
+                .setProperty("hibernate.cache.provider_class", "org.hibernate.cache.NoCacheProvider")
+                .setProperty("hibernate.cache.use_second_level_cache", "false")
+                .setProperty("hibernate.cache.use_query_cache", "false")
+                .setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect")
+                .setProperty("hibernate.show_sql", "true")
+                .setProperty("hibernate.current_session_context_class", "thread")
+                //.addPackage("ru.miralab.db")
+                .addAnnotatedClass(jm.task.core.jdbc.model.User.class);
         return configuration;
     }
 
